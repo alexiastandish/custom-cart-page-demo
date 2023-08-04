@@ -17,14 +17,14 @@ function App() {
         Date.now()
     )
     const [activeSidebarBlock, setActiveSidebarBlock] = useState() // only for fields from the sidebar
-    const [activePreviewBlock, setActivePreviewBlock] = useState() // only for fields from the sidebar
+    const [activePreviewBlock, setActivePreviewBlock] = useState() // only for fields from the cart preview
 
     const currentDragFieldRef = useRef()
     const spacerInsertedRef = useRef()
 
-    // useImmer(initialState) is very similar to useState.
-    // The function returns a tuple, the first value of the tuple is the current state,
-    // the second is the updater function, which accepts an immer producer function or a value as argument
+    // useImmer(initialState): similar to useState.
+    // returns a tuple, the first value of the tuple is the current state
+    // second is the updater function, which accepts an immer producer function or a value as argument
 
     const [data, updateData] = useImmer({
         topFields: [],
@@ -56,10 +56,10 @@ function App() {
         const { active } = e
         const activeData = getData(active)
 
-        // This is where the cloning starts.
-        // We set up a ref to the field we're dragging
-        // from the sidebar so that we can finish the clone
-        // in the onDragEnd handler.
+        // cloning from the side bar w temporary "spacer"
+        // set up a ref to the block we're dragging from the sidebar
+        // if block is dropped in cart preview the clone is configured as a
+        // preview block in the onDragEnd handler
 
         if (activeData.fromSidebar) {
             const { field } = activeData
@@ -96,8 +96,8 @@ function App() {
 
             return
         }
-        // We aren't creating a new element so go ahead and just insert the spacer
-        // since this field already belongs to the canvas.
+        // not creating a new element but inserting the spacer here
+        // since this field already belongs to the cart preview
         const { field, index } = activeData
 
         setActivePreviewBlock(field)
@@ -134,13 +134,15 @@ function App() {
         return topHasBlock >= 0 && bottomHasBlock >= 0
     }
 
+    // handleDragEnd:
+    // checks if over droppable already has a block
+    // resets active block parent to new dropped parent id ("cart-top" or "cart-bottom")
+    // resets non-active block parent to opposing parent id (if non-active block exists)
+    // prevents sortable from transitioning animation with a spacer block
+
     const handleDragEnd = (e) => {
         const { active, over } = e
 
-        // check if over already has block
-        // reset active block parent to new dropped id
-        // reset secondary block parent to
-        // prevent sortable from transitioning with a spacer
         if (!over) {
             updateData((draft) => {
                 draft.topFields = draft.topFields.filter(
@@ -292,7 +294,6 @@ function App() {
         cleanUp()
     }
 
-    // TODO: isnt working
     const handleRemoveBlock = (parent, id) => {
         if (parent === 'cart-bottom') {
             updateData((draft) => {

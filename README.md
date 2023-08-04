@@ -4,6 +4,12 @@
 
 This project is a phase 1 prototype for Custom Blocks on Cart Feature. Though it's scoped for phase 1 of the custom blocks on cart release, it's built to be scalable for future iterations where we allow merchants to add more than 2 blocks at a time. The custom cart blocks are stored as arrays on the backend so building the phase 1 prototype with the future goal in mind seemed appropriate.
 
+#### Reason for prototyping
+
+-   moving away from react beatiful dnd
+-   specific feature requirements requires a lot of extra logic outide of what's provided out of the box w dnd kit
+-   scalable for future iterations of the feature
+
 #### Phase 1
 
 -   can only add 1 custom block on top and one custom block on bottom
@@ -117,6 +123,3 @@ export const renderers = {
 -   Outdated dependencies
 -   Dnd kit has more flexibility
 -   does not provide seamless restriction on drag to a single axis (dnd kit does) which is needed in dashboard features such as navigation and account page; will allow us to move to dndkit in all dnd dashboard features with plenty of x/y axis flexibility
-    Br
-
-Spent some time working on a custom cart page prototype using the new drag and drop library we're implementing into the dashbaord along with react hook form
