@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Prototype for a DndKit implementation with a Reusable Blocks Bank
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+This project is a phase 1 prototype for Custom Blocks on Cart Feature. Though it's scoped for phase 1 of the custom blocks on cart release, it's build to be scalable for future iterations where we allow merchants to add more than 2 blocks at a time. The custom cart blocks are stored as arrays on the backend so building the phase 1 prototype with the future goal in mind seemed appropriate.
 
-In the project directory, you can run:
+#### Phase 1
 
-### `npm start`
+-   can only add 1 custom block on top and one custom block on bottom
+-   no extra tooling/editable functionality outside of drag and drop blocks
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+#### Phase 2
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+-   an extra tab in the sidebar for editing cart settings configuration (current in the Setting {age)
+-   ability to add more than 1-2 custom blocks, allowing the cart page to be more customizable and flexible
 
-### `npm test`
+## Libraries
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   DndKit (@dnd-kit/core, @dnd-kit/sortable): https://docs.dndkit.com/
+-   Immer: https://github.com/immerjs/immer#readme
+-   useImmer: https://github.com/immerjs/use-immer#readme
 
-### `npm run build`
+## Architecture
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Components
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+`App.jsx`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+-   Contains state for blocks bank (draggable blocks - data.topFields and data.bottomFields)
+-   Contains state for preview blocks (blocks live in `CartPreview.jsx`
+    -   The cart preview component contains both droppable areas (cart top and cart bottom)
+-   Contains all `DndConext` functionality
+-   Contains `SortableContext` (https://docs.dndkit.com/presets/sortable/sortable-context)
+    -   items props iterates through the top and bottom block(s) that have been added to the cart preview
 
-### `npm run eject`
+`CartPreview.jsx`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+-   Holds `CartTop` and `CartBottom` droppable components
+-   Contains placeholder div that represents where the static ui in the cart page preview will be rendered
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`CartTop.jsx` & `CartBottom.jsx`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+-   Contains `useDroppable` hook from dnd-kit/core
+-   Id passed into `useDroppable` hook is either cart-top or cart-bottom
+    -   These ids help us decipher how to make adjustments to the data based on the parent id given to the active sortable block (`SortableBlock.jsx`)
+-   Passes parent id and block object to SortableBlock component
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+`SortableBlock.tsx`
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-   Contains `useSortable` hook (https://docs.dndkit.com/presets/sortable/usesortable)
+    -   In addition to the attributes, listeners,transform and setNodeRef arguments (also provided by `useDraggable` hook) a transition argument is provided as well
+    -   transition: disables transform transitions while not dragging, but ensures that items transition back to their final positions when the drag operation is ended or cancelled
+-   Contains `PreviewBlock.jsx` component which is responsible for deciphering how to render each block

@@ -1,29 +1,14 @@
 import './App.css'
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Sidebar from './components/Sidebar'
-import {
-    closestCenter,
-    DndContext,
-    DragOverlay,
-    KeyboardSensor,
-    PointerSensor,
-    rectIntersection,
-    useSensor,
-    useSensors,
-} from '@dnd-kit/core'
+import { DndContext, DragOverlay, rectIntersection } from '@dnd-kit/core'
 import CartPreview from './components/CartPreview'
 import { useImmer } from 'use-immer'
-import {
-    SortableContext,
-    rectSwappingStrategy,
-    horizontalListSortingStrategy,
-    verticalListSortingStrategy,
-    arrayMove,
-} from '@dnd-kit/sortable'
-import {
-    restrictToHorizontalAxis,
-    restrictToVerticalAxis,
-} from '@dnd-kit/modifiers'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+// import {
+//     restrictToHorizontalAxis,
+//     restrictToVerticalAxis,
+// } from '@dnd-kit/modifiers'
 import SidebarBlock from './components/SidebarBlock'
 import PreviewBlock from './components/PreviewBlock'
 import { createSpacer } from './utils/helpers/create-spacer'
@@ -48,10 +33,6 @@ function App() {
         bottomFields: [],
     })
 
-    // console.log('currentDragFieldRef', currentDragFieldRef)
-    // console.log('spacerInsertedRef', spacerInsertedRef)
-    // console.log('activeSidebarBlock', activeSidebarBlock)
-    // console.log('activePreviewBlock', activePreviewBlock)
     // console.log('data', data)
     const cleanUp = () => {
         console.log('CLEANING UP')
@@ -203,13 +184,10 @@ function App() {
                 })
             }
         } else {
-            // console.log('newBlock', newBlock)
             const overData = getData(over)
             const activeData = getData(active)
             const overParent = overData?.parent
             const activeParent = activeData?.parent
-            console.log('overData', overData)
-            console.log('activeData', activeData)
 
             // do not update blocks if the block is dropped within the same parent
             if (overParent !== activeParent) {

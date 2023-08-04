@@ -6,11 +6,7 @@ export default function Sidebar({ fieldsRegKey }) {
     return (
         <div key={fieldsRegKey} className="sidebar">
             {blocks.map((f) => {
-                return (
-                    // temporary block
-                    // <div key={f.type}>{f.title}</div>
-                    <DraggableSidebarBlock key={f.type} field={f} />
-                )
+                return <DraggableSidebarBlock key={f.type} field={f} />
             })}
         </div>
     )

@@ -5,7 +5,7 @@ import PreviewBlock from './PreviewBlock'
 
 export default function SortableBlock(props) {
     const { index, id, field, parent } = props
-    // console.log('parent', parent)
+
     const {
         attributes,
         listeners,
