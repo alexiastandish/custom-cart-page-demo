@@ -5,10 +5,6 @@ import { DndContext, DragOverlay, rectIntersection } from '@dnd-kit/core'
 import CartPreview from './components/CartPreview'
 import { useImmer } from 'use-immer'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-// import {
-//     restrictToHorizontalAxis,
-//     restrictToVerticalAxis,
-// } from '@dnd-kit/modifiers'
 import SidebarBlock from './components/SidebarBlock'
 import PreviewBlock from './components/PreviewBlock'
 import { createSpacer } from './utils/helpers/create-spacer'
@@ -213,8 +209,6 @@ function App() {
                     if (overParent === 'cart-top') {
                         const movedBlock = { ...newBlock, parent: 'cart-top' }
 
-                        console.log('movedBlock', movedBlock)
-                        // const movedBlock =
                         updateData((draft) => {
                             draft.bottomFields.splice(0, 1)
                             draft.topFields.splice(0, 1, movedBlock)
@@ -225,53 +219,15 @@ function App() {
                             parent: 'cart-bottom',
                         }
 
-                        console.log('movedBlock', movedBlock)
-                        // const movedBlock =
                         updateData((draft) => {
                             draft.topFields.splice(0, 1)
                             draft.bottomFields.splice(0, 1, movedBlock)
                         })
                     }
-                    // console.log('data', data)
                 }
             }
         }
 
-        // if (newBlock) {
-        //     const overData = getData(over)
-        //     updateData((draft) => {
-        //         const topSpacerIndex = draft.topFields.findIndex(
-        //             (f) => f.type === 'spacer'
-        //         )
-        //         const bottomSpacerIndex = draft.bottomFields.findIndex(
-        //             (f) => f.type === 'spacer'
-        //         )
-        //         if (overData.parent === 'cart-top') {
-        //             draft.topFields.splice(topSpacerIndex, 1, newBlock)
-
-        //             if (bottomSpacerIndex >= 0) {
-        //                 draft.bottomFields.splice(bottomSpacerIndex, 1)
-        //             }
-        //             draft.topFields = arrayMove(
-        //                 draft.topFields,
-        //                 topSpacerIndex,
-        //                 overData.index || 0
-        //             )
-        //         } else if (overData.parent === 'cart-bottom') {
-        //             draft.bottomFields.splice(bottomSpacerIndex, 1, newBlock)
-
-        //             if (topSpacerIndex >= 0) {
-        //                 draft.topFields.splice(topSpacerIndex, 1)
-        //             }
-
-        //             draft.bottomFields = arrayMove(
-        //                 draft.bottomFields,
-        //                 bottomSpacerIndex,
-        //                 overData.index || 0
-        //             )
-        //         }
-        //     })
-        // }
         setSidebarFieldsRegenKey(Date.now())
         cleanUp()
     }
