@@ -22,9 +22,10 @@ This project is a phase 1 prototype for Custom Blocks on Cart Feature. Though it
 
 ## Libraries
 
--   DndKit (@dnd-kit/core, @dnd-kit/sortable): https://docs.dndkit.com/
--   Immer: https://github.com/immerjs/immer#readme
--   useImmer: https://github.com/immerjs/use-immer#readme
+-   [DndKit (@dnd-kit/core, @dnd-kit/sortable)](https://docs.dndkit.com/)
+-   [Immer](https://github.com/immerjs/immer#readme)
+-   [useImmer](https://github.com/immerjs/use-immer#readme)
+-   [react-hook-form](https://react-hook-form.com/)
 
 ## Architecture
 
