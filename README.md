@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a phase 1 prototype for Custom Blocks on Cart Feature. Though it's scoped for phase 1 of the custom blocks on cart release, it's build to be scalable for future iterations where we allow merchants to add more than 2 blocks at a time. The custom cart blocks are stored as arrays on the backend so building the phase 1 prototype with the future goal in mind seemed appropriate.
+This project is a phase 1 prototype for Custom Blocks on Cart Feature. Though it's scoped for phase 1 of the custom blocks on cart release, it's built to be scalable for future iterations where we allow merchants to add more than 2 blocks at a time. The custom cart blocks are stored as arrays on the backend so building the phase 1 prototype with the future goal in mind seemed appropriate.
 
 #### Phase 1
 
