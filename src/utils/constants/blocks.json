@@ -1,0 +1,18 @@
+[
+    {
+        "type": "custom-block-1",
+        "title": "Custom Block 1"
+    },
+    {
+        "type": "custom-block-2",
+        "title": "Custom Block 2"
+    },
+    {
+        "type": "custom-block-3",
+        "title": "Custom Block 3"
+    },
+    {
+        "type": "custom-block-4",
+        "title": "Custom Block 4"
+    }
+]
