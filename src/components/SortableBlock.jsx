@@ -19,11 +19,7 @@ export default function SortableBlock(props) {
     })
 
     const style = {
-        transform: CSS.Transform.toString(transform),
-        // position: isDragging ? 'absolute' : 'relative',
-        // transform:
-        //     CSS.Translate.toString(transform) ===
-        //     `translate3d(${transform?.x}, ${transform?.y}, 0)`,
+        transform: field.type !== 'spacer' && CSS.Transform.toString(transform),
         transition,
     }
 

@@ -29,7 +29,6 @@ function App() {
         bottomFields: [],
     })
 
-    // console.log('data', data)
     const cleanUp = () => {
         console.log('CLEANING UP')
         setActiveSidebarBlock(null)
@@ -41,7 +40,6 @@ function App() {
     const handleDragStart = (e) => {
         const { active } = e
         const activeData = getData(active)
-        console.log('START: activeData', activeData)
 
         // This is where the cloning starts.
         // We set up a ref to the field we're dragging
@@ -122,7 +120,6 @@ function App() {
     }
 
     const handleDragEnd = (e) => {
-        console.log('e', e)
         const { active, over } = e
 
         // check if over already has block
@@ -238,7 +235,6 @@ function App() {
                 <DndContext
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
-                    // onDragOver={handleDragOver}
                     autoScroll
                     collisionDetection={rectIntersection}
                 >
