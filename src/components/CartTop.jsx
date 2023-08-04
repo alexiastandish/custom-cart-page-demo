@@ -3,7 +3,7 @@ import React from 'react'
 import SortableBlock from './SortableBlock'
 import { CSS } from '@dnd-kit/utilities'
 
-export default function CartTop({ topFields }) {
+export default function CartTop({ topFields, handleRemoveBlock, hideButton }) {
     const { listeners, setNodeRef, transform, attributes, transition } =
         useDroppable({
             id: 'cart-top',
@@ -29,11 +29,13 @@ export default function CartTop({ topFields }) {
             {topFields.map((topField, index) => {
                 return (
                     <SortableBlock
+                        handleRemoveBlock={handleRemoveBlock}
                         parent="cart-top"
                         key={topField.id}
                         id={topField.id}
                         index={index}
                         field={topField}
+                        hideButton={hideButton}
                     />
                 )
             })}

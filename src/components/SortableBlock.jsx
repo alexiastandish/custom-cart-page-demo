@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities'
 import PreviewBlock from './PreviewBlock'
 
 export default function SortableBlock(props) {
-    const { index, id, field, parent } = props
+    const { index, id, field, parent, handleRemoveBlock, hideButton } = props
 
     const {
         attributes,
@@ -26,8 +26,21 @@ export default function SortableBlock(props) {
     }
 
     return (
-        <div {...attributes} {...listeners} ref={setNodeRef} style={style}>
-            <PreviewBlock field={field} />
-        </div>
+        <>
+            {!isDragging && !hideButton && (
+                <button
+                    type="button"
+                    onClick={(e) => handleRemoveBlock(parent, id)}
+                >
+                    remove
+                </button>
+            )}
+            <div {...attributes} {...listeners} ref={setNodeRef} style={style}>
+                <PreviewBlock
+                    field={field}
+                    handleRemoveBlock={handleRemoveBlock}
+                />
+            </div>
+        </>
     )
 }

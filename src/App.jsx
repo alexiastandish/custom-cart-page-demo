@@ -9,6 +9,8 @@ import SidebarBlock from './components/SidebarBlock'
 import PreviewBlock from './components/PreviewBlock'
 import { createSpacer } from './utils/helpers/create-spacer'
 import { getData } from './utils/helpers/get-data'
+import { FormProvider, useForm } from 'react-hook-form'
+import { DevTool } from '@hookform/devtools'
 
 function App() {
     const [sidebarFieldsRegenKey, setSidebarFieldsRegenKey] = useState(
@@ -29,10 +31,21 @@ function App() {
         bottomFields: [],
     })
 
+    const methods = useForm({
+        defaultValues: {
+            topFields: [...data.topFields],
+            bottomFields: [...data.bottomFields],
+        },
+        mode: 'onSubmit',
+    })
+
+    methods.register('topFields')
+    methods.register('bottomFields')
+
     console.log('data', data)
 
     const cleanUp = () => {
-        console.log('CLEANING UP')
+        // console.log('CLEANING UP')
         setActiveSidebarBlock(null)
         setActivePreviewBlock(null)
         currentDragFieldRef.current = null
@@ -55,8 +68,6 @@ function App() {
 
             const allFieldsLength = [...data.topFields, ...data.bottomFields]
                 .length
-
-            console.log('allFieldsLength', allFieldsLength)
 
             currentDragFieldRef.current = {
                 id: active.id,
@@ -167,6 +178,11 @@ function App() {
                         draft.bottomFields.splice(bottomSpacerIndex, 1)
                     }
                 })
+                methods.setValue('topFields', [updatedNewBlock], {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
+                })
             } else if (
                 overData.parent === 'cart-bottom' &&
                 overData.field.type === 'spacer'
@@ -182,6 +198,11 @@ function App() {
                     if (topSpacerIndex >= 0) {
                         draft.topFields.splice(topSpacerIndex, 1)
                     }
+                })
+                methods.setValue('bottomFields', [updatedNewBlock], {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
                 })
             }
         } else {
@@ -210,6 +231,17 @@ function App() {
                         draft.topFields.splice(0, 1, updatedTopField)
                         draft.bottomFields.splice(0, 1, updatedBottomField)
                     })
+
+                    methods.setValue('topFields', [updatedTopField], {
+                        shouldDirty: true,
+                        shouldTouch: true,
+                        shouldValidate: true,
+                    })
+                    methods.setValue('bottomFields', [updatedBottomField], {
+                        shouldDirty: true,
+                        shouldTouch: true,
+                        shouldValidate: true,
+                    })
                 } else {
                     if (overParent === 'cart-top') {
                         const movedBlock = { ...newBlock, parent: 'cart-top' }
@@ -217,6 +249,18 @@ function App() {
                         updateData((draft) => {
                             draft.bottomFields.splice(0, 1)
                             draft.topFields.splice(0, 1, movedBlock)
+                        })
+
+                        // TODO: move these setValue calls into a reusable function
+                        methods.setValue('topFields', [movedBlock], {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                            shouldValidate: true,
+                        })
+                        methods.setValue('bottomFields', [], {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                            shouldValidate: true,
                         })
                     } else if (overParent === 'cart-bottom') {
                         const movedBlock = {
@@ -228,6 +272,17 @@ function App() {
                             draft.topFields.splice(0, 1)
                             draft.bottomFields.splice(0, 1, movedBlock)
                         })
+
+                        methods.setValue('bottomFields', [movedBlock], {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                            shouldValidate: true,
+                        })
+                        methods.setValue('topFields', [], {
+                            shouldDirty: true,
+                            shouldTouch: true,
+                            shouldValidate: true,
+                        })
                     }
                 }
             }
@@ -237,39 +292,84 @@ function App() {
         cleanUp()
     }
 
+    // TODO: isnt working
+    const handleRemoveBlock = (parent, id) => {
+        if (parent === 'cart-bottom') {
+            updateData((draft) => {
+                draft.bottomFields.splice(0, 1)
+            })
+            methods.setValue('bottomFields', [], {
+                shouldDirty: true,
+                shouldTouch: true,
+                shouldValidate: true,
+            })
+        } else {
+            updateData((draft) => {
+                draft.topFields.splice(0, 1)
+            })
+            methods.setValue('topFields', [], {
+                shouldDirty: true,
+                shouldTouch: true,
+                shouldValidate: true,
+            })
+        }
+    }
+
     const { topFields, bottomFields } = data
 
     return (
         <div className="app">
-            <div className="content">
-                <DndContext
-                    onDragStart={handleDragStart}
-                    onDragEnd={handleDragEnd}
-                    autoScroll
-                    collisionDetection={rectIntersection}
-                >
-                    <SortableContext
-                        strategy={verticalListSortingStrategy}
-                        items={[...topFields, ...bottomFields].map(
-                            (field) => field.id
-                        )}
+            <FormProvider {...methods}>
+                <div className="content">
+                    <DndContext
+                        onDragStart={handleDragStart}
+                        onDragEnd={handleDragEnd}
+                        autoScroll
+                        collisionDetection={rectIntersection}
                     >
-                        <Sidebar fieldsRegKey={sidebarFieldsRegenKey} />
-                        <CartPreview
-                            topFields={topFields}
-                            bottomFields={bottomFields}
-                        />
-                    </SortableContext>
-                    <DragOverlay dropAnimation={false}>
-                        {activeSidebarBlock ? (
-                            <SidebarBlock overlay field={activeSidebarBlock} />
-                        ) : null}
-                        {activePreviewBlock ? (
-                            <PreviewBlock overlay field={activePreviewBlock} />
-                        ) : null}
-                    </DragOverlay>
-                </DndContext>
-            </div>
+                        <SortableContext
+                            strategy={verticalListSortingStrategy}
+                            items={[...topFields, ...bottomFields].map(
+                                (field) => field.id
+                            )}
+                        >
+                            <Sidebar fieldsRegKey={sidebarFieldsRegenKey} />
+                            <CartPreview
+                                handleRemoveBlock={handleRemoveBlock}
+                                topFields={topFields}
+                                bottomFields={bottomFields}
+                                hideButton={
+                                    activeSidebarBlock || activePreviewBlock
+                                }
+                            />
+                        </SortableContext>
+                        <DragOverlay dropAnimation={false}>
+                            {activeSidebarBlock ? (
+                                <SidebarBlock
+                                    overlay
+                                    field={activeSidebarBlock}
+                                />
+                            ) : null}
+                            {activePreviewBlock ? (
+                                <PreviewBlock
+                                    hideButton={
+                                        activeSidebarBlock || activePreviewBlock
+                                    }
+                                    overlay
+                                    field={activePreviewBlock}
+                                />
+                            ) : null}
+                        </DragOverlay>
+                    </DndContext>
+                    {/* <DevTool control={methods.control} /> */}
+                    <p>
+                        showSave:{' '}
+                        <strong>
+                            {JSON.stringify(methods.formState.isDirty)}
+                        </strong>
+                    </p>
+                </div>
+            </FormProvider>
         </div>
     )
 }

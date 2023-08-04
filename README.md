@@ -117,3 +117,6 @@ export const renderers = {
 -   Outdated dependencies
 -   Dnd kit has more flexibility
 -   does not provide seamless restriction on drag to a single axis (dnd kit does) which is needed in dashboard features such as navigation and account page; will allow us to move to dndkit in all dnd dashboard features with plenty of x/y axis flexibility
+    Br
+
+Spent some time working on a custom cart page prototype using the new drag and drop library we're implementing into the dashbaord along with react hook form

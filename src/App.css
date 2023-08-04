@@ -50,6 +50,7 @@
     width: 225px;
     margin: 0 auto;
     border: 1px solid black;
+    /* position: relative; */
 }
 
 .preview-section-top {

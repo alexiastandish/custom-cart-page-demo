@@ -2,7 +2,7 @@ import React from 'react'
 import { getRenderer } from '../utils/helpers/get-renderer'
 
 export default function PreviewBlock(props) {
-    const { field, overlay, ...rest } = props
+    const { field, overlay, handleRemoveBlock, ...rest } = props
     const { type } = field
 
     const Component = getRenderer(type)
