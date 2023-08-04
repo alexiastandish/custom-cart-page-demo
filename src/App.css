@@ -20,11 +20,11 @@
     background: black;
     width: 100%;
     opacity: 0.25;
-    height: 100px;
+    height: 50px;
 }
 
 .canvas-field {
-    padding: 15px;
+    /* padding: 15px; */
 }
 
 .canvas-field.overlay {
@@ -37,8 +37,8 @@
 }
 
 .preview {
-    height: 450px;
-    width: 250px;
+    /* height: 450px; */
+    /* width: 250px; */
     border: 1px solid black;
     /* display: flex; */
     /* flex-direction: column; */

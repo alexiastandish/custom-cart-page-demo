@@ -4,9 +4,20 @@ import CartTop from './CartTop'
 
 export default function CartPreview({ topFields, bottomFields }) {
     return (
-        <div className="preview" style={{ width: 250 }}>
+        <div className="preview">
             <CartTop topFields={topFields} />
-            <div style={{ height: 200 }}>Cart preview static section</div>
+            <div
+                style={{
+                    height: 200,
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: '1px solid gray',
+                    width: '225px',
+                    margin: '0 auto',
+                }}
+            >
+                Cart preview static section
+            </div>
             <CartBottom bottomFields={bottomFields} />
         </div>
     )

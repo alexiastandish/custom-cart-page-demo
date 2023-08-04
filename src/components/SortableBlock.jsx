@@ -21,6 +21,8 @@ export default function SortableBlock(props) {
     const style = {
         transform: field.type !== 'spacer' && CSS.Transform.toString(transform),
         transition,
+        border: '1px solid red',
+        height: 50,
     }
 
     return (

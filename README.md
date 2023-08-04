@@ -110,3 +110,10 @@ export const renderers = {
 -   handling two separate droppable areas / arrays in the cart preview but treating the blocks within them as sortable items between the two different droppable areas
 -   conditionally creating placeholder blocks that render on drag start based on starting a drag event, if any blocks exist within each droppable area, and where the block is dropped onDragEnd
 -   buildling a prototype that considers future iterations where there can be several blocks in each droppable, allowing them to sort within their own droppable parent (top or bottom), but also allowing them to sort outside of the current droppable parent
+
+### Reasons for moving away from react-beautiful-dnd
+
+-   Have not shipped a new version change since 2020
+-   Outdated dependencies
+-   Dnd kit has more flexibility
+-   does not provide seamless restriction on drag to a single axis (dnd kit does) which is needed in dashboard features such as navigation and account page; will allow us to move to dndkit in all dnd dashboard features with plenty of x/y axis flexibility

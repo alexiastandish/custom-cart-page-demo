@@ -10,6 +10,7 @@ export default function CartTop({ topFields }) {
             data: {
                 isContainer: true,
             },
+            // disabled: topFields.length > 0,
         })
 
     const style = {

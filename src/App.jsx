@@ -29,6 +29,8 @@ function App() {
         bottomFields: [],
     })
 
+    console.log('data', data)
+
     const cleanUp = () => {
         console.log('CLEANING UP')
         setActiveSidebarBlock(null)
@@ -53,6 +55,8 @@ function App() {
 
             const allFieldsLength = [...data.topFields, ...data.bottomFields]
                 .length
+
+            console.log('allFieldsLength', allFieldsLength)
 
             currentDragFieldRef.current = {
                 id: active.id,
@@ -150,7 +154,10 @@ function App() {
             const bottomSpacerIndex = data.bottomFields.findIndex(
                 (f) => f.type === 'spacer'
             )
-            if (overData.parent === 'cart-top') {
+            if (
+                overData.parent === 'cart-top' &&
+                overData.field.type === 'spacer'
+            ) {
                 const updatedNewBlock = { ...newBlock, parent: 'cart-top' }
 
                 updateData((draft) => {
@@ -160,7 +167,10 @@ function App() {
                         draft.bottomFields.splice(bottomSpacerIndex, 1)
                     }
                 })
-            } else if (overData.parent === 'cart-bottom') {
+            } else if (
+                overData.parent === 'cart-bottom' &&
+                overData.field.type === 'spacer'
+            ) {
                 const updatedNewBlock = { ...newBlock, parent: 'cart-bottom' }
                 updateData((draft) => {
                     draft.bottomFields.splice(
