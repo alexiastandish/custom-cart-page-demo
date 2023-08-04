@@ -71,3 +71,8 @@
     cursor: pointer;
     user-select: none;
 }
+
+.sidebar-block.overlay {
+    background: black;
+    color: white;
+}

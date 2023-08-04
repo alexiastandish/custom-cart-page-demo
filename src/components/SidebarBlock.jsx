@@ -8,5 +8,5 @@ export default function SidebarBlock(props) {
     if (overlay) {
         className += ' overlay'
     }
-    return <div className={className}>{title}</div>
+    return <div className={className}>asdf{title}</div>
 }

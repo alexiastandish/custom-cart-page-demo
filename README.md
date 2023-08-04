@@ -45,9 +45,68 @@ This project is a phase 1 prototype for Custom Blocks on Cart Feature. Though it
     -   These ids help us decipher how to make adjustments to the data based on the parent id given to the active sortable block (`SortableBlock.jsx`)
 -   Passes parent id and block object to SortableBlock component
 
-`SortableBlock.tsx`
+`SortableBlock.jsx`
 
 -   Contains `useSortable` hook (https://docs.dndkit.com/presets/sortable/usesortable)
     -   In addition to the attributes, listeners,transform and setNodeRef arguments (also provided by `useDraggable` hook) a transition argument is provided as well
     -   transition: disables transform transitions while not dragging, but ensures that items transition back to their final positions when the drag operation is ended or cancelled
 -   Contains `PreviewBlock.jsx` component which is responsible for deciphering how to render each block
+
+`Sidebar.jsx`
+
+-   `sidebarFieldsRegenKey` is updated each time a draggable/sortable block is dropped and the prop is passed as the key to the outmost div of the `Sidebar` component
+-   inside of this component, the provided, "static" blocks are iterated through and passed into the `DraggableSidebarBlock` component
+
+`DraggableSidebarBlock.jsx`
+
+-   in order to populate a random id for each sidebar block on each dnd event: const id = useRef(nanoid())
+-   bc of this, the blocks in the sidebar act like reusable building blocks library to pull from rather than moving them from point a to point b
+-   in the useDraggable hook, the data argument receives the current field ({type, name}) and fromSidebar (boolean) in order to access additional data about the draggable element in event handlers
+
+`PreviewBlock.jsx`
+
+-   calls `getRenderer` function which handles displaying either a spacer block or a custom block with data
+
+`SidebarBlock.jsx`
+
+-   receives `overlay` prop in order to render a different style for when a sidebar block is being dragged
+
+### Helpers
+
+-   `handleDragStart`:
+
+    -   checks to see if the block came from the sidebar; if so a spacer block is populated into the droppable areas that don't already have a block
+    -   handles logic for creating spacer (in empty droppable) and/or swapping top and bottom sortable blocks if the drag came from one of the cart preview droppable areas
+
+-   `handleDragEnd`:
+
+    -   check if over droppable aread already has a block
+        -   resets active block parent to new dropped id
+        -   resets non active block parent to other drop id
+    -   handles a drag end into an empty space/non droppable area
+    -   populates new block from sidebar data and sets parent based on location that the block was dropped
+    -   checks to see if blocks exist in both droppables
+        -   if so, runs a function to swap locations of top and bottom blocks but updates parent property to new droppable parent id
+        -   if not, handles logic for removing a block from the active block container and pushes active block into empty droppable container (also updates parent id to be that of it's new parent container)
+
+-   `cleanUp`: resets state and refs on drag end
+
+-   `getRenderer`: handles displaying either a spacer block or a custom block with data; pulls data to be rendered from `renderer` object
+
+```
+export const renderers = {
+    'custom-block-1': () => <div>custom block 1</div>,
+    'custom-block-2': () => <div>custom block 2</div>
+    ...
+```
+
+-   `createSpacer`: creates placeholder/spacer block to be rendered on a drag event ONLY where a block in the preview does not already exist
+-
+
+### Obstacles / Challenges
+
+-   deciphering how to handle drag/drop events based on where the block is coming from (sidebar, cart-top, cart-bottom)
+-   creating sidebar draggables that interact as a draggable item for the cart preview but still persist in the array of sidebar block options after a drop into the cart preview has been made
+-   handling two separate droppable areas / arrays in the cart preview but treating the blocks within them as sortable items between the two different droppable areas
+-   conditionally creating placeholder blocks that render on drag start based on starting a drag event, if any blocks exist within each droppable area, and where the block is dropped onDragEnd
+-   buildling a prototype that considers future iterations where there can be several blocks in each droppable, allowing them to sort within their own droppable parent (top or bottom), but also allowing them to sort outside of the current droppable parent

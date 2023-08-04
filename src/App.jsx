@@ -112,8 +112,6 @@ function App() {
     }
 
     const shouldBlocksSwap = (top, bottom) => {
-        console.log('top', top)
-        console.log('bottom', bottom)
         const topHasBlock = top.findIndex(
             (topField) => topField?.parent === 'cart-top'
         )
@@ -245,7 +243,6 @@ function App() {
                     collisionDetection={rectIntersection}
                 >
                     <SortableContext
-                        // strategy={rectSwappingStrategy}
                         strategy={verticalListSortingStrategy}
                         items={[...topFields, ...bottomFields].map(
                             (field) => field.id
